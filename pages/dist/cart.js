@@ -45,9 +45,9 @@ var _id_1 = require("./products/[id]");
 var Item_1 = require("../components/Item");
 var CartPage = function () {
     var router = router_1.useRouter();
-    var cartItemNum = recoil_1.useRecoilValue(cartItem_1.cartItemNumState);
     var _a = react_1.useState([]), cartItems = _a[0], setCartItems = _a[1];
     var _b = react_1.useState(0), totalPrice = _b[0], setTotalPrice = _b[1];
+    var _c = recoil_1.useRecoilState(cartItem_1.cartItemNumState), cartItemNum = _c[0], setCartItemNum = _c[1];
     react_1.useEffect(function () {
         var func = function () { return __awaiter(void 0, void 0, void 0, function () {
             var items, total, _i, _a, item;
@@ -58,7 +58,7 @@ var CartPage = function () {
                         items = _b.sent();
                         setCartItems(items);
                         total = 0;
-                        for (_i = 0, _a = cartItems; _i < _a.length; _i++) {
+                        for (_i = 0, _a = items; _i < _a.length; _i++) {
                             item = _a[_i];
                             total += item.product.price * item.quantity;
                             console.log(total);
@@ -69,14 +69,15 @@ var CartPage = function () {
             });
         }); };
         func();
-    }, [cartItems]);
+    }, []);
     var submit = function () {
         alert("注文しました");
         localStorage.removeItem(_id_1.CART_ITEMS);
+        setCartItemNum(0);
         router.push("/");
     };
     return (React.createElement(Layout_1.Layout, { cartItemNum: cartItemNum }, cartItems === null || cartItems === void 0 ? void 0 :
-        cartItems.map(function (item) { return (React.createElement(Item_1["default"], { key: item.product.id, cartItem: item })); }),
+        cartItems.map(function (item, index) { return (React.createElement(Item_1["default"], { key: index, cartItem: item })); }),
         React.createElement("h1", null,
             "\u5408\u8A08\u91D1\u984D\uFF1A",
             totalPrice,

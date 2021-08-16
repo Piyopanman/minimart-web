@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import type { CartItem } from "./products/[id]";
 import { CART_ITEMS } from "./products/[id]";
 import Item from "../components/Item";
+import { getCartItemNum } from "../utils/getCartItemNum";
 
 const CartPage: NextPage = () => {
   const router = useRouter();
@@ -24,6 +25,7 @@ const CartPage: NextPage = () => {
         console.log(total);
       }
       setTotalPrice(total);
+      setCartItemNum(getCartItemNum());
     };
     func();
   }, []);

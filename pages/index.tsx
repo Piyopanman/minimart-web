@@ -3,15 +3,17 @@ import Link from "next/link";
 import styles from "./index.module.css";
 import { listProducts, Product } from "../lib/product";
 import { Layout } from "../components/Layout";
-import { useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { cartItemNumState } from "../recoil/atoms/cartItem";
+import { getCartItemNum } from "../utils/getCartItemNum";
 
 const TopPage: FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
-  const cartItem = useRecoilValue(cartItemNumState);
+  const [cartItem, setCartItem] = useRecoilState(cartItemNumState);
 
   useEffect(() => {
     listProducts().then((products) => setProducts(products));
+    setCartItem(getCartItemNum());
   }, []);
 
   return (
@@ -19,7 +21,6 @@ const TopPage: FC = () => {
       <ul className={styles.list}>
         {products.map((product) => (
           <li key={product.id} className={styles.listItem}>
-            {/* このリンク先はないので新規ページを作る */}
             <Link href={`/products/${product.id}`}>
               <a className={styles.link}>
                 <div className={styles.imageWrapper}>

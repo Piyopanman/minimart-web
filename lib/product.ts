@@ -39,7 +39,6 @@ export async function listProducts(): Promise<Product[]> {
 
 export async function getProduct(id: String): Promise<Product> {
   const data = await graphqlRequest({ query: productQuery, variables: { id: id } });
-  console.log(data);
 
   return data.product;
 }

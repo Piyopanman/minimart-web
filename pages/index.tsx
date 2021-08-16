@@ -3,16 +3,19 @@ import Link from "next/link";
 import styles from "./index.module.css";
 import { listProducts, Product } from "../lib/product";
 import { Layout } from "../components/Layout";
+import { useRecoilValue } from "recoil";
+import { cartItemNumState } from "../recoil/atoms/cartItem";
 
 const TopPage: FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
+  const cartItem = useRecoilValue(cartItemNumState);
 
   useEffect(() => {
     listProducts().then((products) => setProducts(products));
   }, []);
 
   return (
-    <Layout>
+    <Layout cartItemNum={cartItem}>
       <ul className={styles.list}>
         {products.map((product) => (
           <li key={product.id} className={styles.listItem}>

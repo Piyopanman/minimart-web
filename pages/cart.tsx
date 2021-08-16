@@ -9,7 +9,6 @@ import { CART_ITEMS } from "./products/[id]";
 import Item from "../components/Item";
 import { getCartItemNum } from "../utils/getCartItemNum";
 import { totalPriceState } from "../recoil/atoms/totalPrice";
-import { updateCartItemNum } from "../utils/updateCartItemNum";
 
 const CartPage: NextPage = () => {
   const router = useRouter();
@@ -19,15 +18,8 @@ const CartPage: NextPage = () => {
 
   useEffect(() => {
     const items: CartItem[] = JSON.parse(localStorage.getItem(CART_ITEMS) as string);
-  }, []);
-
-  useEffect(() => {
-    const items: CartItem[] = JSON.parse(localStorage.getItem(CART_ITEMS) as string);
     setCartItems(items);
-    let total = 0;
-    for (let item of items as CartItem[]) {
-      total += item.product.price * item.quantity;
-    }
+    const total = items.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
     setTotalPrice(total);
     setCartItemNum(getCartItemNum());
   }, []);
@@ -39,27 +31,10 @@ const CartPage: NextPage = () => {
     router.push("/");
   };
 
-  const incrementItem = (item: CartItem) => {
-    item.quantity++;
-    updateCartItemNum(item.product.id, 1);
-  };
-
-  const decrementItem = (item: CartItem) => {
-    if (item.quantity > 1) {
-      item.quantity--;
-    }
-    updateCartItemNum(item.product.id, 0);
-  };
-
   return (
     <Layout cartItemNum={cartItemNum}>
       {cartItems?.map((item, index) => (
-        <Item
-          key={index}
-          cartItem={item}
-          onIncrement={() => incrementItem(item)}
-          onDecrement={() => decrementItem(item)}
-        />
+        <Item key={index} cartItem={item} />
       ))}
       <h1>合計金額：{totalPrice}円</h1>
       <button onClick={submit}>注文する</button>

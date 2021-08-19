@@ -1,4 +1,3 @@
-import { create } from "domain";
 import { CartItem } from "../pages/products/[id]";
 import { graphqlRequest } from "./graphqlClient";
 

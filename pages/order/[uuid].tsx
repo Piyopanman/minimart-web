@@ -2,8 +2,6 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { Layout } from "../../components/Layout";
 import { useEffect, useState } from "react";
-import { getProduct } from "../../lib/product";
-import type { Product } from "../../lib/product";
 import { useRecoilState } from "recoil";
 import { cartItemNumState } from "../../recoil/atoms/cartItem";
 import { getCartItemNum } from "../../utils/getCartItemNum";

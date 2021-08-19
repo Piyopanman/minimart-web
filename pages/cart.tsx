@@ -9,6 +9,7 @@ import { CART_ITEMS } from "./products/[id]";
 import Item from "../components/Item";
 import { getCartItemNum } from "../utils/getCartItemNum";
 import { totalPriceState } from "../recoil/atoms/totalPrice";
+import { createOrder } from "../lib/order";
 
 const CartPage: NextPage = () => {
   const router = useRouter();
@@ -24,11 +25,12 @@ const CartPage: NextPage = () => {
     setCartItemNum(getCartItemNum());
   }, []);
 
-  const submit = () => {
-    alert("注文しました");
+  const submit = async () => {
+    const items: CartItem[] = JSON.parse(localStorage.getItem(CART_ITEMS) as string);
+    const orderId = await createOrder(items);
     localStorage.removeItem(CART_ITEMS);
     setCartItemNum(0);
-    router.push("/");
+    router.push(`/order/${orderId}`);
   };
 
   return (
